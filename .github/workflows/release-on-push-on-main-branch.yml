@@ -1,0 +1,46 @@
+name: Release on push on main branch
+
+on:
+  push:
+    branches:
+      - 'main'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get next version
+        id: get_next_version
+        uses: thenativeweb/get-next-version@2.5.0
+
+      # - name: Setup Godot
+      # ...
+
+      - name: Setup Git user
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
+        run: |
+          git config user.name github-actions 
+          git config user.email github-actions@github.com
+
+      - name: Create new tag
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
+        run: |
+          NEXT_VERSION=${{ steps.get_next_version.outputs.version }}
+          
+          git tag $NEXT_VERSION
+          git push origin $NEXT_VERSION
+
+      # - name: Build game
+      # ...
+
+      # - name: Publish game
+      # ...

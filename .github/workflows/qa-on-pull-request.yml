@@ -1,0 +1,16 @@
+name: QA on pull request
+
+on: pull_request
+
+jobs:
+  qa_on_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # - name: Setup Godot
+      # ...
+
+      # - name: Build game
+      # ...
