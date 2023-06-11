@@ -13,7 +13,7 @@ jobs:
 
       - name: Setup Godot
         run: |
-          mkdir -v -p build/windows build/linux build/mac build/web ~/.local/share/godot/templates
+          mkdir -v -p build/windows build/linux build/web ~/.local/share/godot/templates
           mv /root/.local/share/godot/templates/4.0.3.stable ~/.local/share/godot/templates/4.0.3.stable
 
       - name: Build for Windows
@@ -21,9 +21,6 @@ jobs:
 
       - name: Build for Linux
         run: godot -v --export-release "Linux/X11" ./build/linux/godot-wildjam-58.x86_64
-
-      - name: Build for Mac
-        run: godot -v --export-release "Mac OSX" ./build/mac/godot-wildjam-58.zip
 
       - name: Build for Web
         run: godot -v --export-release "HTML5" ./build/web/index.html
