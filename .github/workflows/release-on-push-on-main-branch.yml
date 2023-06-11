@@ -9,9 +9,8 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  create_new_version:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,9 +20,6 @@ jobs:
       - name: Get next version
         id: get_next_version
         uses: thenativeweb/get-next-version@2.5.0
-
-      # - name: Setup Godot
-      # ...
 
       - name: Setup Git user
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
@@ -39,8 +35,31 @@ jobs:
           git tag $NEXT_VERSION
           git push origin $NEXT_VERSION
 
-      # - name: Build game
-      # ...
+  publish_new_version:
+    runs-on: ubuntu-latest
+    needs: create_new_version
+    container:
+      image: docker://barichello/godot-ci:4.0.3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Godot
+        run: |
+          mkdir -v -p build/windows build/linux build/mac build/web ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/4.0.3.stable ~/.local/share/godot/templates/4.0.3.stable
+
+      - name: Build for Windows
+        run: godot -v --export-release "Windows Desktop" ./build/windows/godot-wildjam-58.exe
+
+      - name: Build for Linux
+        run: godot -v --export-release "Linux/X11" ./build/linux/godot-wildjam-58.x86_64
+
+      - name: Build for Mac
+        run: godot -v --export-release "Mac OSX" ./build/mac/godot-wildjam-58.zip
+
+      - name: Build for Web
+        run: godot -v --export-release "HTML5" ./build/web/index.html
 
       # - name: Publish game
       # ...

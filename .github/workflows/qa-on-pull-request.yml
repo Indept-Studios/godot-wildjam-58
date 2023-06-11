@@ -5,12 +5,25 @@ on: pull_request
 jobs:
   qa_on_pull_request:
     runs-on: ubuntu-latest
+    container:
+      image: docker://barichello/godot-ci:4.0.3
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # - name: Setup Godot
-      # ...
+      - name: Setup Godot
+        run: |
+          mkdir -v -p build/windows build/linux build/mac build/web ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/4.0.3.stable ~/.local/share/godot/templates/4.0.3.stable
 
-      # - name: Build game
-      # ...
+      - name: Build for Windows
+        run: godot -v --export-release "Windows Desktop" ./build/windows/godot-wildjam-58.exe
+
+      - name: Build for Linux
+        run: godot -v --export-release "Linux/X11" ./build/linux/godot-wildjam-58.x86_64
+
+      - name: Build for Mac
+        run: godot -v --export-release "Mac OSX" ./build/mac/godot-wildjam-58.zip
+
+      - name: Build for Web
+        run: godot -v --export-release "HTML5" ./build/web/index.html
