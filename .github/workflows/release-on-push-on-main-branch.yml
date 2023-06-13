@@ -11,6 +11,9 @@ permissions:
 jobs:
   create_new_version:
     runs-on: ubuntu-latest
+    outputs:
+      hasNextVersion: ${{ steps.get_next_version.outputs.hasNextVersion }}
+      version: ${{ steps.get_next_version.outputs.version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -38,6 +41,7 @@ jobs:
   publish_new_version:
     runs-on: ubuntu-latest
     needs: create_new_version
+    if: ${{ needs.create_new_version.outputs.hasNextVersion == 'true' }}
     container:
       image: docker://barichello/godot-ci:4.0.3
     steps:
