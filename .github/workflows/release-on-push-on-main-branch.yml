@@ -50,13 +50,13 @@ jobs:
           mv /root/.local/share/godot/templates/4.0.3.stable ~/.local/share/godot/templates/4.0.3.stable
 
       - name: Build for Windows
-        run: godot -v --export-release "Windows Desktop" ./build/windows/godot-wildjam-58.exe
+        run: godot --verbose --headless --export-release "Windows Desktop" ./build/windows/godot-wildjam-58.exe
 
       - name: Build for Linux
-        run: godot -v --export-release "Linux/X11" ./build/linux/godot-wildjam-58.x86_64
+        run: godot --verbose --headless --export-release "Linux/X11" ./build/linux/godot-wildjam-58.x86_64
 
       - name: Build for Web
-        run: godot -v --export-release "HTML5" ./build/web/index.html
+        run: godot --verbose --headless --export-release "HTML5" ./build/web/index.html
 
       # - name: Publish game
       # ...
