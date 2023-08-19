@@ -8,3 +8,7 @@ updates:
       prefix: chore
     assignees:
       - Indept-Studios
+    groups:
+      dependencies:
+        patterns:
+          - "*"
