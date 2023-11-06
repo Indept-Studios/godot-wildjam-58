@@ -16,13 +16,13 @@ jobs:
       version: ${{ steps.get_next_version.outputs.version }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Get next version
         id: get_next_version
-        uses: thenativeweb/get-next-version@2.6.0
+        uses: thenativeweb/get-next-version@2.6.1
 
       - name: Setup Git user
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
@@ -46,7 +46,7 @@ jobs:
       image: docker://barichello/godot-ci:4.0.3
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Godot build environment
         run: |
